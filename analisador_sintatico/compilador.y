@@ -49,9 +49,9 @@ comp: line
 
 line: %empty
 	| T_QUIT T_NEWLINE						{ printf("Até mais...\n"); exit(0); }
-	| declaracao final
-	| atribuicao final
-	| relacional final
+	| declaracao inicio
+	| atribuicao inicio
+	| while inicio
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); }
@@ -59,7 +59,7 @@ declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); }
 	| T_TBOOLEANO T_VAR { printf("VARIAVEL BOOLEANA LIDA\n"); }
 	;
 
-final: T_NEWLINE line
+inicio: T_NEWLINE line
 	;
 
 atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT { printf("ATRIBUIÇÃO LIDA (INT)\n"); }
@@ -117,16 +117,21 @@ relacional: T_VAR T_MAIOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR > ex
 	| T_VAR T_DIF T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR != VAR)\n"); }
 	;
 
-oplogica: T_VAR T_AND T_VAR
-	| T_VAR T_OR T_VAR
-	| T_NOT T_VAR
+oplogica:  %empty
+	| T_AND relacional oplogica 
+	| T_OR relacional oplogica
 	;
 
-cond: 
-	| oplogica
-	| relacional
+bloco: %empty 
+	| T_CE inicio T_NEWLINE return T_CD
 	;
 
+return: %empty	
+	| T_RETURN T_VAR	
+	;
+
+while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco 
+	; 
 
 
 %%
