@@ -53,9 +53,11 @@ VAR		[a-zA-Z][a-zA-Z0-9]*
 "quit"					{return T_QUIT; }
 "if"					{return T_IF; }
 "else"					{return T_ELSE; }
+"do"                    {return T_DO; }
 "while"					{return T_WHILE; }
 "for"					{return T_FOR; }
 "switch"                {return T_SWITCH; }
+"break"                 {return T_BREAK; }
 "case"                  {return T_CASE; }
 "default"               {return T_DEFAULT; }
 "scan"					{return T_SCAN; }
