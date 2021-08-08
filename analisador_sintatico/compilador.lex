@@ -53,7 +53,7 @@ VAR		[a-zA-Z][a-zA-Z0-9]*
 "else"						{return T_ELSE; }
 "while"						{ return T_WHILE; }
 "for"						{return T_FOR; }
-"scan_int"					{return T_SCAN; }
+"scan"					    {return T_SCAN; }
 "print_int"					{return T_PRINT; }
 "return"					{return T_RETURN; }
 {VAR}						{return T_VAR; }

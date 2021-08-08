@@ -51,7 +51,8 @@ line: %empty
 	| T_QUIT T_NEWLINE						{ printf("Até mais...\n"); exit(0); }
 	| declaracao inicio
 	| atribuicao inicio
-	| while inicio
+	| cond inicio
+	| entrada inicio
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); }
@@ -130,9 +131,13 @@ return: %empty
 	| T_RETURN T_VAR	
 	;
 
-while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco 
-	; 
+entrada: T_SCAN T_LEFT T_VAR T_RIGHT
+	;
 
+cond: T_IF relacional oplogica bloco {printf("Operacao condicional LIDA (IF)\n");}
+	| T_IF relacional oplogica bloco T_ELSE bloco
+	| T_WHILE T_LEFT relacional oplogica T_RIGHT bloco
+	;
 
 %%
 
