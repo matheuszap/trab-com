@@ -1,0 +1,11 @@
+while(a==1 && c==3) {
+    int z
+    bool b
+    y--
+}
+if(b==2 || x!=3){
+    float b = 1.2 + 1.3
+    x++
+}else{
+    bool b
+}
