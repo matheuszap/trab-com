@@ -11,10 +11,16 @@
 list *v;
 int num_linha = 1;
 
+void yyerror_lex(const char* s) {
+	fprintf(stderr, "Erro de análise lexica: %s \n", s);
+	exit(1);
+}
+
 %}
 
 DIGITO		[0-9]
 VAR		[a-zA-Z][a-zA-Z0-9]*
+COMENTARIO    ###.*
 
 %%
 
@@ -64,7 +70,10 @@ VAR		[a-zA-Z][a-zA-Z0-9]*
 "print" 				{return T_PRINT; list_push_back(v, yytext, num_linha);}
 "return"				{return T_RETURN; list_push_back(v, yytext, num_linha);}
 {VAR}					{return T_VAR; list_push_back(v, yytext, num_linha);}
+"in range"              {return T_INRANGE; list_push_back(v,yytext,num_linha);}
 "\n"					{++num_linha; return T_NEWLINE; }
+{COMENTARIO}            {}
+.                       {yyerror_lex("Caractere desconhecido");}
 
 %%
 

@@ -72,22 +72,30 @@ extern int yydebug;
     T_MENOR = 278,
     T_ATRIB = 279,
     T_PV = 280,
-    T_NEWLINE = 281,
-    T_QUIT = 282,
-    T_PLUS = 283,
-    T_MINUS = 284,
-    T_MULTIPLY = 285,
-    T_DIVIDE = 286,
-    T_MOD = 287,
-    T_PLUS_PLUS = 288,
-    T_VOID = 289,
-    T_IF = 290,
-    T_ELSE = 291,
-    T_WHILE = 292,
-    T_FOR = 293,
-    T_SCAN = 294,
-    T_PRINT = 295,
-    T_RETURN = 296
+    T_2P = 281,
+    T_NEWLINE = 282,
+    T_QUIT = 283,
+    T_PLUS = 284,
+    T_MINUS = 285,
+    T_MULTIPLY = 286,
+    T_DIVIDE = 287,
+    T_MOD = 288,
+    T_PP = 289,
+    T_MM = 290,
+    T_VOID = 291,
+    T_IF = 292,
+    T_ELSE = 293,
+    T_DO = 294,
+    T_WHILE = 295,
+    T_FOR = 296,
+    T_SWITCH = 297,
+    T_CASE = 298,
+    T_DEFAULT = 299,
+    T_BREAK = 300,
+    T_INRANGE = 301,
+    T_SCAN = 302,
+    T_PRINT = 303,
+    T_RETURN = 304
   };
 #endif
 
@@ -95,12 +103,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "compilador.y"
+#line 20 "compilador.y"
 
 	int ival;
 	float fval;
 
-#line 104 "compilador.tab.h"
+#line 112 "compilador.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

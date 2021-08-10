@@ -34,9 +34,8 @@ void yyerror(const char* s);
 %token T_ATRIB T_PV T_2P T_NEWLINE T_QUIT								
 %token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_MOD T_PP T_MM  			
 %token T_VOID							
-%token T_IF T_ELSE T_DO T_WHILE T_FOR T_SWITCH T_CASE T_DEFAULT T_BREAK
+%token T_IF T_ELSE T_DO T_WHILE T_FOR T_SWITCH T_CASE T_DEFAULT T_BREAK T_INRANGE
 %token T_SCAN T_PRINT T_RETURN
-
 %left T_PLUS T_MINUS
 %left T_MULTIPLY T_DIVIDE
 
@@ -56,6 +55,7 @@ line: %empty
 	| while inicio
 	| if inicio
 	| switch inicio
+	| for inicio
 	| plus inicio
 	| minus inicio
 	;
@@ -156,10 +156,15 @@ else: %empty
 	| T_ELSE bloco {printf("ELSE LIDO\n"); }
 	;
 
-switch: T_SWITCH T_LEFT T_VAR T_RIGHT bloco
-	;
+switch: T_SWITCH T_LEFT T_VAR T_LEFT
 
 while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }
+	| T_DO bloco T_WHILE T_LEFT relacional oplogica T_RIGHT {printf("DO-WHILE LIDO\n");}
+	;
+
+
+for: T_FOR T_VAR T_INRANGE T_VAR bloco {printf("FOR LIDO\n");}
+	| T_FOR T_VAR T_INRANGE T_INT bloco {printf("FOR LIDO\n");}
 	;
 
 plus: T_VAR T_PP  {printf("VAR++ LIDO\n"); }
@@ -167,7 +172,9 @@ plus: T_VAR T_PP  {printf("VAR++ LIDO\n"); }
 
 minus: T_VAR T_MM {printf("VAR-- LIDO\n"); }
 	;
+
 %%
+
 
 
 int main(argc, argv) 
