@@ -10,6 +10,9 @@
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
+extern list *v;
+
+int line = 1;
 
 void yyerror(const char* s);
 %}
@@ -57,13 +60,13 @@ line: %empty
 	| minus inicio
 	;
 
-declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); }
+declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
 	| T_TREAL T_VAR  { printf("VARIAVEL REAL LIDA\n"); }
 	| T_TBOOLEANO T_VAR { printf("VARIAVEL BOOLEANA LIDA\n"); }
 	;
 
-inicio: %empty 
-	| T_NEWLINE line
+inicio: %empty
+	| T_NEWLINE line {line++;}
 	;
 
 atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT { printf("ATRIBUIÇÃO LIDA (INT)\n"); }
@@ -171,6 +174,7 @@ int main(argc, argv)
 	int argc;
 	char **argv;
 {
+	v = list_create();
 	++argv, --argc;
 
 	if(argc >0)
@@ -182,11 +186,13 @@ int main(argc, argv)
 		yyparse();
 	} while(!feof(yyin));
 
+	list_delete(v);
+
 	return 0;
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Erro de análise (sintática): %s\n", s);
+	fprintf(stderr, "Erro de análise (sintática): %s (linha: %d)\n", s, line);
 	exit(1);
 }
 
