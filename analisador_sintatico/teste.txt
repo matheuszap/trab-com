@@ -1,5 +1,6 @@
-if(x==1){
-    int b
-} else {
-    int a
+int a
+scan(a)
+print(a)
+if(a == 1){
+    return a
 }

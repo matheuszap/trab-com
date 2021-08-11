@@ -53,11 +53,11 @@ start: %empty
 	| entrada start
 	| saida start
 	| while start
-	| if start
 	| switch start
 	| for start
 	| plus start
 	| minus start
+	| if start
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
@@ -70,6 +70,10 @@ atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT { printf("ATRIBUIÇÃO LIDA (INT)\n
 	| T_TREAL T_VAR T_ATRIB exprREAL { printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
 	| T_TBOOLEANO T_VAR T_ATRIB T_TRUE	{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
 	| T_TBOOLEANO T_VAR T_ATRIB T_FALSE	 {  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
+	| T_VAR T_ATRIB exprINT	{ printf("ATRIBUIÇÃO LIDA (INT)\n"); }
+	| T_VAR T_ATRIB exprREAL { printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
+	| T_VAR T_ATRIB T_TRUE	{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
+	| T_VAR T_ATRIB T_FALSE	 {  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
 	;
 
 exprINT: T_INT
@@ -81,6 +85,7 @@ exprINT: T_INT
 	| T_VAR T_PLUS exprINT
 	| T_VAR T_MINUS exprINT
 	| T_VAR T_MULTIPLY exprINT
+	| T_VAR T_DIVIDE exprINT
 	;
 
 exprREAL: T_REAL
@@ -97,6 +102,10 @@ exprREAL: T_REAL
 	| exprREAL T_MINUS exprINT
 	| exprREAL T_MULTIPLY exprINT
 	| exprREAL T_DIVIDE exprINT
+	| T_VAR T_PLUS exprREAL
+	| T_VAR T_MINUS exprREAL
+	| T_VAR T_MULTIPLY exprREAL
+	| T_VAR T_DIVIDE exprREAL
 	;
 
 relacional: T_VAR T_MAIOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR > exprINT)\n"); }
@@ -119,6 +128,11 @@ relacional: T_VAR T_MAIOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR > ex
 	| T_VAR T_MENORE T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR <= VAR)\n"); }
 	| T_VAR T_EQUAL T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR == VAR)\n"); }
 	| T_VAR T_DIF T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR != VAR)\n"); }
+
+	|T_VAR T_EQUAL T_FALSE { printf("OPERAÇÃO RELACIONAL LIDA (VAR == FALSE)\n");}
+	|T_VAR T_EQUAL T_TRUE { printf("OPERAÇÃO RELACIONAL LIDA (VAR == TRUE)\n");}
+	|T_VAR T_DIF T_TRUE { printf("OPERAÇÃO RELACIONAL LIDA (VAR != TRUE)\n");}
+	|T_VAR T_DIF T_FALSE { printf("OPERAÇÃO RELACIONAL LIDA (VAR != FALSE)\n");}
 	;
 
 oplogica:  %empty
@@ -134,9 +148,9 @@ return: %empty
 	| T_RETURN return_tipo	
 	;
 
-return_tipo: T_VAR 
-	| T_TRUE
-	| T_FALSE
+return_tipo: T_VAR {printf("RETURN VARIAVEL \n"); }
+	| T_TRUE {printf("RETURN TRUE\n"); }
+	| T_FALSE {printf("SCAN FALSE\n"); }
 	;
 
 entrada: T_SCAN T_LEFT T_VAR T_RIGHT {printf("SCAN LIDO\n"); }
@@ -145,14 +159,13 @@ entrada: T_SCAN T_LEFT T_VAR T_RIGHT {printf("SCAN LIDO\n"); }
 saida: T_PRINT T_LEFT T_VAR T_RIGHT	 {printf("PRINT LIDO\n"); }
 	;
 	
-
 if: T_IF T_LEFT relacional oplogica T_RIGHT bloco else {printf("IF LIDO\n"); }
 	;
 
 else: %empty
 	| T_ELSE bloco {printf("ELSE LIDO\n"); }
 	;
-
+	
 switch: T_SWITCH T_LEFT T_VAR T_RIGHT T_CE switchBloq T_CD {printf("SWITCH LIDO\n");}
 	;
 
@@ -160,8 +173,8 @@ switchBloq: case start T_BREAK case
 	|case start T_BREAK
 	;
 
-case: T_CASE T_INT T_2P
-	| T_DEFAULT T_INT T_2P
+case: T_CASE T_INT T_2P 
+	| T_DEFAULT T_INT T_2P 
 	;
 
 while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }

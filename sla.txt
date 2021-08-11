@@ -1,0 +1,8 @@
+if: T_IF T_LEFT relacional oplogica T_RIGHT bloco else {printf("IF LIDO\n"); }
+	;
+
+else: %empty
+	| T_ELSE bloco {printf("ELSE LIDO\n"); }
+	;
+
+	| if start
