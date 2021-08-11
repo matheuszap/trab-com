@@ -354,8 +354,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 50
-#define YY_END_OF_BUFFER 51
+#define YY_NUM_RULES 51
+#define YY_END_OF_BUFFER 52
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -365,16 +365,16 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[126] =
     {   0,
-        0,    0,   51,   49,    1,   50,   19,   49,   26,   49,
+        0,    0,   52,   50,    1,   48,   19,   50,   26,   50,
        27,   28,   24,   22,   23,   25,    3,    6,    7,   18,
        12,   17,   46,   46,   46,   46,   46,   46,   46,   46,
-       46,   46,   46,   46,   46,   46,    4,   49,    5,   14,
+       46,   46,   46,   46,   46,   46,    4,   50,    5,   14,
         0,   20,   29,   30,    2,    3,   15,   13,   16,   46,
        46,   46,   46,   46,   36,   46,   46,   46,   46,   34,
        46,   46,   46,   46,   46,   46,   46,   46,   46,   21,
         0,    2,   46,   46,   46,   46,   46,   46,   46,   38,
         0,    8,   46,   46,   46,   46,   46,   46,   46,   46,
-        0,   48,   10,   46,   41,   46,   35,   46,   46,    0,
+        0,   49,   10,   46,   41,   46,   35,   46,   46,    0,
 
        46,   33,   46,   43,   46,   31,   11,   46,   40,   46,
        32,    9,    0,   44,   46,   46,   37,   46,    0,   45,
@@ -1054,19 +1054,25 @@ case 48:
 /* rule 48 can match eol */
 YY_RULE_SETUP
 #line 74 "compilador.lex"
-{}
+{num_linha++;}
 	YY_BREAK
 case 49:
+/* rule 49 can match eol */
 YY_RULE_SETUP
 #line 75 "compilador.lex"
-{yyerror_lex("Caractere desconhecido");}
+{}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 77 "compilador.lex"
+#line 76 "compilador.lex"
+{yyerror_lex("Caractere desconhecido");}
+	YY_BREAK
+case 51:
+YY_RULE_SETUP
+#line 78 "compilador.lex"
 ECHO;
 	YY_BREAK
-#line 1070 "lex.yy.c"
+#line 1076 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2071,7 +2077,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 77 "compilador.lex"
+#line 78 "compilador.lex"
 
 
 

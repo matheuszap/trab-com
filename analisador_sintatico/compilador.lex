@@ -71,6 +71,7 @@ COMENTARIO    ###.*\n
 "return"				{return T_RETURN; list_push_back(v, yytext, num_linha);}
 {VAR}					{return T_VAR; list_push_back(v, yytext, num_linha);}
 "in range"              {return T_INRANGE; list_push_back(v,yytext,num_linha);}
+"\n"					{num_linha++;}
 {COMENTARIO}            {}
 .                       {yyerror_lex("Caractere desconhecido");}
 

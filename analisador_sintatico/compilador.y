@@ -43,21 +43,21 @@ void yyerror(const char* s);
 
 %%
 
-comp: line
+comp: start
 	;
 
-line: %empty
+start: %empty
 	| T_QUIT					{ printf("Até mais...\n"); exit(0); }
-	| declaracao line
-	| atribuicao line
-	| entrada line
-	| saida line
-	| while line
-	| if line
-	| switch line
-	| for line
-	| plus line
-	| minus line
+	| declaracao start
+	| atribuicao start
+	| entrada start
+	| saida start
+	| while start
+	| if start
+	| switch start
+	| for start
+	| plus start
+	| minus start
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
@@ -127,7 +127,7 @@ oplogica:  %empty
 	;
 
 bloco: %empty 
-	| T_CE line return T_CD
+	| T_CE start return T_CD
 	;
 
 return: %empty	
@@ -144,6 +144,7 @@ entrada: T_SCAN T_LEFT T_VAR T_RIGHT {printf("SCAN LIDO\n"); }
 
 saida: T_PRINT T_LEFT T_VAR T_RIGHT	 {printf("PRINT LIDO\n"); }
 	;
+	
 
 if: T_IF T_LEFT relacional oplogica T_RIGHT bloco else {printf("IF LIDO\n"); }
 	;
@@ -152,7 +153,15 @@ else: %empty
 	| T_ELSE bloco {printf("ELSE LIDO\n"); }
 	;
 
-switch: T_SWITCH T_LEFT T_VAR T_LEFT
+switch: T_SWITCH T_LEFT T_VAR T_RIGHT T_CE switchBloq T_CD {printf("SWITCH LIDO\n");}
+	;
+
+switchBloq: case start T_BREAK case
+	|case start T_BREAK
+	;
+
+case: T_CASE T_INT T_2P
+	| T_DEFAULT T_INT T_2P
 	;
 
 while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }
@@ -196,7 +205,6 @@ int main(argc, argv)
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Erro de análise (sintática): %s (linha:)\n", s);
+	fprintf(stderr, "Erro de análise (sintática): %s (linha;)\n", s);
 	exit(1);
 }
-
