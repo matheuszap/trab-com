@@ -20,7 +20,7 @@ void yyerror_lex(const char* s) {
 
 DIGITO		[0-9]
 VAR		[a-zA-Z][a-zA-Z0-9]*
-COMENTARIO    ###.*
+COMENTARIO    ###.*\n
 
 %%
 
@@ -71,7 +71,6 @@ COMENTARIO    ###.*
 "return"				{return T_RETURN; list_push_back(v, yytext, num_linha);}
 {VAR}					{return T_VAR; list_push_back(v, yytext, num_linha);}
 "in range"              {return T_INRANGE; list_push_back(v,yytext,num_linha);}
-"\n"					{++num_linha; return T_NEWLINE; }
 {COMENTARIO}            {}
 .                       {yyerror_lex("Caractere desconhecido");}
 

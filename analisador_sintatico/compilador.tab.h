@@ -1,9 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,9 +29,6 @@
 
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
-
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
 
 #ifndef YY_YY_COMPILADOR_TAB_H_INCLUDED
 # define YY_YY_COMPILADOR_TAB_H_INCLUDED
@@ -73,44 +69,44 @@ extern int yydebug;
     T_ATRIB = 279,
     T_PV = 280,
     T_2P = 281,
-    T_NEWLINE = 282,
-    T_QUIT = 283,
-    T_PLUS = 284,
-    T_MINUS = 285,
-    T_MULTIPLY = 286,
-    T_DIVIDE = 287,
-    T_MOD = 288,
-    T_PP = 289,
-    T_MM = 290,
-    T_VOID = 291,
-    T_IF = 292,
-    T_ELSE = 293,
-    T_DO = 294,
-    T_WHILE = 295,
-    T_FOR = 296,
-    T_SWITCH = 297,
-    T_CASE = 298,
-    T_DEFAULT = 299,
-    T_BREAK = 300,
-    T_INRANGE = 301,
-    T_SCAN = 302,
-    T_PRINT = 303,
-    T_RETURN = 304
+    T_QUIT = 282,
+    T_PLUS = 283,
+    T_MINUS = 284,
+    T_MULTIPLY = 285,
+    T_DIVIDE = 286,
+    T_MOD = 287,
+    T_PP = 288,
+    T_MM = 289,
+    T_VOID = 290,
+    T_IF = 291,
+    T_ELSE = 292,
+    T_DO = 293,
+    T_WHILE = 294,
+    T_FOR = 295,
+    T_SWITCH = 296,
+    T_CASE = 297,
+    T_DEFAULT = 298,
+    T_BREAK = 299,
+    T_INRANGE = 300,
+    T_SCAN = 301,
+    T_PRINT = 302,
+    T_RETURN = 303
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+
 union YYSTYPE
 {
-#line 20 "compilador.y"
+#line 20 "compilador.y" /* yacc.c:1909  */
 
 	int ival;
 	float fval;
 
-#line 112 "compilador.tab.h"
-
+#line 108 "compilador.tab.h" /* yacc.c:1909  */
 };
+
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

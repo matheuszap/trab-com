@@ -12,7 +12,7 @@ extern int yyparse();
 extern FILE* yyin;
 extern list *v;
 
-int line = 1;
+//int line = 1;
 
 void yyerror(const char* s);
 %}
@@ -31,7 +31,7 @@ void yyerror(const char* s);
 %token T_LEFT T_RIGHT T_CE T_CD			
 %token T_OR T_AND T_NOT		
 %token T_EQUAL T_DIF T_MENORE T_MAIORE T_MAIOR T_MENOR	
-%token T_ATRIB T_PV T_2P T_NEWLINE T_QUIT								
+%token T_ATRIB T_PV T_2P T_QUIT								
 %token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_MOD T_PP T_MM  			
 %token T_VOID							
 %token T_IF T_ELSE T_DO T_WHILE T_FOR T_SWITCH T_CASE T_DEFAULT T_BREAK T_INRANGE
@@ -47,17 +47,17 @@ comp: line
 	;
 
 line: %empty
-	| T_QUIT T_NEWLINE						{ printf("Até mais...\n"); exit(0); }
-	| declaracao inicio
-	| atribuicao inicio
-	| entrada inicio
-	| saida inicio
-	| while inicio
-	| if inicio
-	| switch inicio
-	| for inicio
-	| plus inicio
-	| minus inicio
+	| T_QUIT					{ printf("Até mais...\n"); exit(0); }
+	| declaracao line
+	| atribuicao line
+	| entrada line
+	| saida line
+	| while line
+	| if line
+	| switch line
+	| for line
+	| plus line
+	| minus line
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
@@ -65,9 +65,6 @@ declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); }
 	| T_TBOOLEANO T_VAR { printf("VARIAVEL BOOLEANA LIDA\n"); }
 	;
 
-inicio: %empty
-	| T_NEWLINE line {line++;}
-	;
 
 atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT { printf("ATRIBUIÇÃO LIDA (INT)\n"); }
 	| T_TREAL T_VAR T_ATRIB exprREAL { printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
@@ -127,11 +124,10 @@ relacional: T_VAR T_MAIOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR > ex
 oplogica:  %empty
 	| T_AND relacional oplogica 
 	| T_OR relacional oplogica
-	| T_LEFT oplogica T_RIGHT
 	;
 
 bloco: %empty 
-	| T_CE inicio return T_CD
+	| T_CE line return T_CD
 	;
 
 return: %empty	
@@ -157,6 +153,7 @@ else: %empty
 	;
 
 switch: T_SWITCH T_LEFT T_VAR T_LEFT
+	;
 
 while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }
 	| T_DO bloco T_WHILE T_LEFT relacional oplogica T_RIGHT {printf("DO-WHILE LIDO\n");}
@@ -199,7 +196,7 @@ int main(argc, argv)
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Erro de análise (sintática): %s (linha: %d)\n", s, line);
+	fprintf(stderr, "Erro de análise (sintática): %s (linha:)\n", s);
 	exit(1);
 }
 

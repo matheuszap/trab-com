@@ -1,3 +1,15 @@
+###comentario
+for i in range 2 {
+    int a = 2*2
+} 
+
+while(a==2 || b==3){
+    float b = 4.5
+}
+
+for i in range 5 {
+    bool c = true
+}
+
+
 int a
-### oi isso eh um coment
-int b
