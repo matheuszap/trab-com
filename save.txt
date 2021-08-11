@@ -1,0 +1,27 @@
+
+%%
+
+comp: line
+	;
+
+line: %empty
+	| T_QUIT					{ printf("Até mais...\n"); exit(0); }
+	| declaracao inicio
+	| atribuicao inicio
+	| entrada inicio
+	| saida inicio
+	| while inicio
+	| if inicio
+	| switch inicio
+	| for inicio
+	| plus inicio
+	| minus inicio
+	;
+
+declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
+	| T_TREAL T_VAR  { printf("VARIAVEL REAL LIDA\n"); }
+	| T_TBOOLEANO T_VAR { printf("VARIAVEL BOOLEANA LIDA\n"); }
+	;
+
+inicio: line 
+	;
