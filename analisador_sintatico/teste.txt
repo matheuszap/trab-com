@@ -1,6 +1,11 @@
-int a
-scan(a)
-print(a)
-if(a == 1){
-    return a
+### Digite aqui os testes e rode o programa (bash ./run.sh)
+### Exemplos:
+int a = 2
+float b = 2.5
+if(a==2){
+    bool c = true
 }
+
+
+
+

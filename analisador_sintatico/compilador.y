@@ -12,7 +12,6 @@ extern int yyparse();
 extern FILE* yyin;
 extern list *v;
 
-//int line = 1;
 
 void yyerror(const char* s);
 %}
@@ -47,7 +46,7 @@ comp: start
 	;
 
 start: %empty
-	| T_QUIT					{ printf("Até mais...\n"); exit(0); }
+	| T_QUIT			{ printf("Até mais...\n"); exit(0); }
 	| declaracao start
 	| atribuicao start
 	| entrada start
@@ -218,6 +217,6 @@ int main(argc, argv)
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Erro de análise (sintática): %s (linha;)\n", s);
+	fprintf(stderr, "Erro de análise (sintática): %s\n", s);
 	exit(1);
 }
