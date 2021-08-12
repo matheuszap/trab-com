@@ -1,6 +1,4 @@
-int a
-scan(a)
-print(a)
-if(a == 1){
-    return a
+switch(a){
+    case 1: int a break
+    default: int a break
 }

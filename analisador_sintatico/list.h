@@ -8,7 +8,7 @@ void list_delete(list *);
 
 void list_push_back(list *list, char *nome, int linha);
 
-char* list_pop_back(list *list);
+char *list_pop_back(list *list);
 
 int list_size(list *);
 

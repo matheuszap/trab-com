@@ -57,7 +57,7 @@ start: %empty
 	| for start
 	| plus start
 	| minus start
-	| if start
+	| cond start
 	;
 
 declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
@@ -140,8 +140,7 @@ oplogica:  %empty
 	| T_OR relacional oplogica
 	;
 
-bloco: %empty 
-	| T_CE start return T_CD
+bloco: T_CE start return T_CD
 	;
 
 return: %empty	
@@ -159,23 +158,28 @@ entrada: T_SCAN T_LEFT T_VAR T_RIGHT {printf("SCAN LIDO\n"); }
 saida: T_PRINT T_LEFT T_VAR T_RIGHT	 {printf("PRINT LIDO\n"); }
 	;
 	
-if: T_IF T_LEFT relacional oplogica T_RIGHT bloco else {printf("IF LIDO\n"); }
+cond: if else
+
+if: T_IF T_LEFT relacional oplogica T_RIGHT bloco {printf("IF LIDO\n"); }
 	;
 
 else: %empty
-	| T_ELSE bloco {printf("ELSE LIDO\n"); }
-	;
+	| T_ELSE cond  {printf("ELSE LIDO\n"); }
+	| T_ELSE bloco  {printf("ELSE LIDO\n");}
+
 	
-switch: T_SWITCH T_LEFT T_VAR T_RIGHT T_CE switchBloq T_CD {printf("SWITCH LIDO\n");}
+switch: T_SWITCH T_LEFT T_VAR T_RIGHT T_CE switchBloq default T_CD {printf("SWITCH LIDO\n");}
 	;
 
-switchBloq: case start T_BREAK case
-	|case start T_BREAK
+switchBloq: case switchBloq
+	|case
 	;
 
-case: T_CASE T_INT T_2P 
-	| T_DEFAULT T_INT T_2P 
+case: T_CASE T_INT T_2P start T_BREAK {printf("CASE LIDO\n");}
 	;
+
+default : %empty 
+	|T_DEFAULT T_2P start T_BREAK  {printf("DEFAULT LIDO\n");}
 
 while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }
 	| T_DO bloco T_WHILE T_LEFT relacional oplogica T_RIGHT {printf("DO-WHILE LIDO\n");}
