@@ -1,4 +1,18 @@
+<<<<<<< HEAD
 switch(a){
     case 1: int a break
     default: int a break
 }
+=======
+### Digite aqui os testes e rode o programa (bash ./run.sh)
+### Exemplos:
+int a = 2
+float b = 2.5
+if(a==2){
+    bool c = true
+}
+
+
+
+
+>>>>>>> 8cd962283c6aa8b816998216e605ea1c43037820
