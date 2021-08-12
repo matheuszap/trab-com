@@ -149,7 +149,7 @@ return: %empty
 
 return_tipo: T_VAR {printf("RETURN VARIAVEL \n"); }
 	| T_TRUE {printf("RETURN TRUE\n"); }
-	| T_FALSE {printf("SCAN FALSE\n"); }
+	| T_FALSE {printf("RETURN FALSE\n"); }
 	;
 
 entrada: T_SCAN T_LEFT T_VAR T_RIGHT {printf("SCAN LIDO\n"); }
