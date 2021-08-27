@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct list list;
 
@@ -6,7 +7,7 @@ list *list_create(void);
 
 void list_delete(list *);
 
-void list_push_back(list *list, char *nome, int linha);
+void list_push_back(list *list, char *nome, int linha, char *tipo, bool isvar);
 
 char *list_pop_back(list *list);
 

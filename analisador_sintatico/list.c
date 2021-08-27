@@ -2,10 +2,16 @@
 #include "list.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
+
+int var_count = 0;
 
 typedef struct item {
   char *nome;
   int linha;
+  char *tipo;
+  bool isvar;
+  int id;
 
   struct item *next;
   struct item *prev;
@@ -37,7 +43,7 @@ void list_delete(list *list) {
   free(list);
 }
 
-void list_push_back(list *list, char *nome, int linha) {
+void list_push_back(list *list, char *nome, int linha, char *tipo, bool isvar) {
   item *obj = malloc(sizeof(item));
 
   obj->next = NULL;
@@ -45,6 +51,9 @@ void list_push_back(list *list, char *nome, int linha) {
   obj->nome = (char*)malloc(sizeof(char*)*strlen(nome));
   strcpy(obj->nome,nome);
   obj->linha = linha;
+  obj->tipo = (char*)malloc(sizeof(char*)*strlen(tipo));
+  strcpy(obj->tipo,tipo);
+  obj->isvar = isvar;
 
   if(list->tail) {
     list->tail->next = obj;
@@ -52,6 +61,11 @@ void list_push_back(list *list, char *nome, int linha) {
   } else {
     list->head = obj;
     list->tail = obj;
+  }
+
+  if(isvar == true){
+    obj->id == var_count;
+    var_count++;
   }
 }
 
@@ -91,4 +105,19 @@ void list_show(list *list) {
 	}
 }
 
+void setTipo(list *list,char *tipo,char *var){
+	for(item *i = list->tail; i!= NULL; i = i->prev){
+		if(strcmp(var,i->nome)==0){
+      			strcpy(i->tipo,tipo);
+    		}
+	}
+}
 
+int getIdVar(list *list,char *var){
+	for(item *i = list->head; i!= NULL; i = i->next){
+		if(strcmp(i->nome,var)==0){
+      			return i->id;
+    		}
+	}
+	return -1;
+}

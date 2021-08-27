@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "list.h"
+#include "bytecode.h"
 
 extern int yylex();
 extern int yyparse();
@@ -19,14 +20,14 @@ void yyerror(const char* s);
 %union {
 	int ival;
 	float fval;
+	char *sval;
 }
 
 /* Declaração dos tokens... */
 
 %token<ival> T_INT
 %token<fval> T_REAL
-%token T_VAR T_TINTEIRO T_TREAL T_TBOOLEANO 
-%token T_TRUE T_FALSE
+%token<sval> T_VAR T_TINTEIRO T_TREAL T_TBOOLEANO T_TRUE T_FALSE
 %token T_LEFT T_RIGHT T_CE T_CD			
 %token T_OR T_AND T_NOT		
 %token T_EQUAL T_DIF T_MENORE T_MAIORE T_MAIOR T_MENOR	
@@ -38,11 +39,15 @@ void yyerror(const char* s);
 %left T_PLUS T_MINUS
 %left T_MULTIPLY T_DIVIDE
 
+%type <fval> exprREAL
+%type <ival> exprINT
+
+
 %start comp
 
 %%
 
-comp: start
+comp: {header();} start
 	;
 
 start: %empty
@@ -59,28 +64,28 @@ start: %empty
 	| cond start
 	;
 
-declaracao:  T_TINTEIRO T_VAR  { printf("VARIAVEL INTEIRO LIDA\n"); } 
-	| T_TREAL T_VAR  { printf("VARIAVEL REAL LIDA\n"); }
-	| T_TBOOLEANO T_VAR { printf("VARIAVEL BOOLEANA LIDA\n"); }
+declaracao:  T_TINTEIRO T_VAR   				{ printf("VARIAVEL INTEIRO LIDA\n"); setTipo(v,$1,$2);} 
+	| T_TREAL T_VAR  							{ printf("VARIAVEL REAL LIDA\n"); setTipo(v,$1,$2);}
+	| T_TBOOLEANO T_VAR 						{ printf("VARIAVEL BOOLEANA LIDA\n"); setTipo(v,$1,$2);}
 	;
 
 
-atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT { printf("ATRIBUIÇÃO LIDA (INT)\n"); }
-	| T_TREAL T_VAR T_ATRIB exprREAL { printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
-	| T_TBOOLEANO T_VAR T_ATRIB T_TRUE	{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
-	| T_TBOOLEANO T_VAR T_ATRIB T_FALSE	 {  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
-	| T_VAR T_ATRIB exprINT	{ printf("ATRIBUIÇÃO LIDA (INT)\n"); }
-	| T_VAR T_ATRIB exprREAL { printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
-	| T_VAR T_ATRIB T_TRUE	{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
-	| T_VAR T_ATRIB T_FALSE	 {  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
+atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT 	{ printf("ATRIBUIÇÃO LIDA (INT)\n"); setTipo(v,$1,$2); istore(v,$2);} 
+	| T_TREAL T_VAR T_ATRIB exprREAL 			{ printf("ATRIBUIÇÃO LIDA (REAL)\n"); setTipo(v,$1,$2);}
+	| T_TBOOLEANO T_VAR T_ATRIB T_TRUE			{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); setTipo(v,$1,$2);}
+	| T_TBOOLEANO T_VAR T_ATRIB T_FALSE	 		{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); setTipo(v,$1,$2);}
+	| T_VAR T_ATRIB exprINT						{ printf("ATRIBUIÇÃO LIDA (INT)\n"); }
+	| T_VAR T_ATRIB exprREAL 					{ printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
+	| T_VAR T_ATRIB T_TRUE						{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
+	| T_VAR T_ATRIB T_FALSE	 					{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
 	;
 
-exprINT: T_INT
-	| exprINT T_PLUS exprINT
-	| exprINT T_MINUS exprINT
-	| exprINT T_MULTIPLY exprINT
-	| exprINT T_DIVIDE exprINT	
-	| T_LEFT exprINT T_RIGHT
+exprINT: T_INT									{ldc($1);}			
+	| exprINT T_PLUS exprINT					{$$=$1+$3; iadd();}
+	| exprINT T_MINUS exprINT					{$$=$1-$3; isub();}
+	| exprINT T_MULTIPLY exprINT				{$$=$1*$3; imul();}
+	| exprINT T_DIVIDE exprINT					{$$=$1/$3; idiv();}
+	| T_LEFT exprINT T_RIGHT					{$$=$2;}
 	| T_VAR T_PLUS exprINT
 	| T_VAR T_MINUS exprINT
 	| T_VAR T_MULTIPLY exprINT
@@ -88,19 +93,19 @@ exprINT: T_INT
 	;
 
 exprREAL: T_REAL
-	| exprREAL T_PLUS exprREAL
-	| exprREAL T_MINUS exprREAL
-	| exprREAL T_MULTIPLY exprREAL
-	| exprREAL T_DIVIDE exprREAL	
-	| T_LEFT exprREAL T_RIGHT
-	| exprINT T_PLUS exprREAL
-	| exprINT T_MINUS exprREAL
-	| exprINT T_MULTIPLY exprREAL
-	| exprINT T_DIVIDE exprREAL	
-	| exprREAL T_PLUS exprINT
-	| exprREAL T_MINUS exprINT
-	| exprREAL T_MULTIPLY exprINT
-	| exprREAL T_DIVIDE exprINT
+	| exprREAL T_PLUS exprREAL 			{$$=$1+$3;}
+	| exprREAL T_MINUS exprREAL 		{$$=$1-$3;}
+	| exprREAL T_MULTIPLY exprREAL		{$$=$1*$3; fmul();}
+	| exprREAL T_DIVIDE exprREAL		{$$=$1/$3;}
+	| T_LEFT exprREAL T_RIGHT			{$$=$2;}
+	| exprINT T_PLUS exprREAL 			{$$=$1+$3;}
+	| exprINT T_MINUS exprREAL			{$$=$1-$3;}
+	| exprINT T_MULTIPLY exprREAL		{$$=$1*$3;}
+	| exprINT T_DIVIDE exprREAL			{$$=$1/$3;}
+	| exprREAL T_PLUS exprINT			{$$=$1+$3;}
+	| exprREAL T_MINUS exprINT			{$$=$1-$3;}
+	| exprREAL T_MULTIPLY exprINT		{$$=$1*$3;}
+	| exprREAL T_DIVIDE exprINT			{$$=$1/$3;}
 	| T_VAR T_PLUS exprREAL
 	| T_VAR T_MINUS exprREAL
 	| T_VAR T_MULTIPLY exprREAL
@@ -158,6 +163,7 @@ saida: T_PRINT T_LEFT T_VAR T_RIGHT	 {printf("PRINT LIDO\n"); }
 	;
 	
 cond: if else
+	;
 
 if: T_IF T_LEFT relacional oplogica T_RIGHT bloco {printf("IF LIDO\n"); }
 	;
