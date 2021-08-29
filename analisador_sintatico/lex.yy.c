@@ -823,232 +823,232 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 28 "compilador.lex"
-{return T_REAL; list_push_back(v, yytext, num_linha); }
+{return T_REAL; list_push_back(v, yytext, num_linha, "float", false); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 29 "compilador.lex"
-{return T_INT;  list_push_back(v, yytext, num_linha); }
+{return T_INT;  list_push_back(v, yytext, num_linha, "int", false); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 30 "compilador.lex"
-{return T_CE; list_push_back(v, yytext, num_linha); }
+{return T_CE; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 31 "compilador.lex"
-{return T_CD; list_push_back(v, yytext, num_linha); }
+{return T_CD; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 32 "compilador.lex"
-{return T_2P; list_push_back(v, yytext, num_linha); }
+{return T_2P; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 33 "compilador.lex"
-{return T_PV;  list_push_back(v, yytext, num_linha); }
+{return T_PV;  list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 34 "compilador.lex"
-{return T_TINTEIRO; list_push_back(v, yytext, num_linha); }
+{return T_TINTEIRO; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 35 "compilador.lex"
-{return T_TREAL; list_push_back(v, yytext, num_linha); }
+{return T_TREAL; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 36 "compilador.lex"
-{return T_TBOOLEANO;  list_push_back(v, yytext, num_linha); }
+{return T_TBOOLEANO;  list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 37 "compilador.lex"
-{return T_VOID; list_push_back(v, yytext, num_linha); }
+{return T_VOID; list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 38 "compilador.lex"
-{return T_ATRIB; list_push_back(v, yytext, num_linha);}
+{return T_ATRIB; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 39 "compilador.lex"
-{return T_EQUAL;  list_push_back(v, yytext, num_linha); }
+{return T_EQUAL;  list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 40 "compilador.lex"
-{return T_DIF;  list_push_back(v, yytext, num_linha); }
+{return T_DIF;  list_push_back(v, yytext, num_linha, "", false); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 41 "compilador.lex"
-{return T_MENORE; list_push_back(v, yytext, num_linha);}
+{return T_MENORE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 42 "compilador.lex"
-{return T_MAIORE;  list_push_back(v, yytext, num_linha);}
+{return T_MAIORE;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 43 "compilador.lex"
-{return T_MAIOR;  list_push_back(v, yytext, num_linha);}
+{return T_MAIOR;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 44 "compilador.lex"
-{return T_MENOR; list_push_back(v, yytext, num_linha);}
+{return T_MENOR; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 45 "compilador.lex"
-{return T_NOT; list_push_back(v, yytext, num_linha);}
+{return T_NOT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 46 "compilador.lex"
-{return T_AND;  list_push_back(v, yytext, num_linha);}
+{return T_AND;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 47 "compilador.lex"
-{return T_OR; list_push_back(v, yytext, num_linha);}
+{return T_OR; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 48 "compilador.lex"
-{return T_PLUS;  list_push_back(v, yytext, num_linha);}
+{return T_PLUS;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 49 "compilador.lex"
-{return T_MINUS;  list_push_back(v, yytext, num_linha);}
+{return T_MINUS;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 50 "compilador.lex"
-{return T_MULTIPLY;  list_push_back(v, yytext, num_linha);}
+{return T_MULTIPLY;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 51 "compilador.lex"
-{return T_DIVIDE;  list_push_back(v, yytext, num_linha);}
+{return T_DIVIDE;  list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 52 "compilador.lex"
-{return T_MOD; list_push_back(v, yytext, num_linha);}
+{return T_MOD; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 53 "compilador.lex"
-{return T_LEFT; list_push_back(v, yytext, num_linha);}
+{return T_LEFT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 54 "compilador.lex"
-{return T_RIGHT; list_push_back(v, yytext, num_linha);}
+{return T_RIGHT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 55 "compilador.lex"
-{return T_PP; list_push_back(v, yytext, num_linha);}
+{return T_PP; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 56 "compilador.lex"
-{return T_MM; list_push_back(v, yytext, num_linha);}
+{return T_MM; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 57 "compilador.lex"
-{return T_TRUE; list_push_back(v, yytext, num_linha);}
+{return T_TRUE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 58 "compilador.lex"
-{return T_FALSE; list_push_back(v, yytext, num_linha);}
+{return T_FALSE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 59 "compilador.lex"
-{return T_QUIT; list_push_back(v, yytext, num_linha);}
+{return T_QUIT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 60 "compilador.lex"
-{return T_IF; list_push_back(v, yytext, num_linha);}
+{return T_IF; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 61 "compilador.lex"
-{return T_ELSE; list_push_back(v, yytext, num_linha);}
+{return T_ELSE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 62 "compilador.lex"
-{return T_DO; list_push_back(v, yytext, num_linha);}
+{return T_DO; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 63 "compilador.lex"
-{return T_WHILE; list_push_back(v, yytext, num_linha);}
+{return T_WHILE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 64 "compilador.lex"
-{return T_FOR; list_push_back(v, yytext, num_linha);}
+{return T_FOR; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 65 "compilador.lex"
-{return T_SWITCH; list_push_back(v, yytext, num_linha);}
+{return T_SWITCH; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 66 "compilador.lex"
-{return T_BREAK; list_push_back(v, yytext, num_linha);}
+{return T_BREAK; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 67 "compilador.lex"
-{return T_CASE; list_push_back(v, yytext, num_linha);}
+{return T_CASE; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 68 "compilador.lex"
-{return T_DEFAULT; list_push_back(v, yytext, num_linha);}
+{return T_DEFAULT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 69 "compilador.lex"
-{return T_SCAN; list_push_back(v, yytext, num_linha);}
+{return T_SCAN; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 70 "compilador.lex"
-{return T_PRINT; list_push_back(v, yytext, num_linha);}
+{return T_PRINT; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 71 "compilador.lex"
-{return T_RETURN; list_push_back(v, yytext, num_linha);}
+{return T_RETURN; list_push_back(v, yytext, num_linha, "", false);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 72 "compilador.lex"
-{return T_VAR; list_push_back(v, yytext, num_linha);}
+{return T_VAR; list_push_back(v, yytext, num_linha, "", true);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 73 "compilador.lex"
-{return T_INRANGE; list_push_back(v,yytext,num_linha);}
+{return T_INRANGE; list_push_back(v,yytext,num_linha, "", false);}
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */

@@ -10,8 +10,3 @@ return
 .method public static main([Ljava/lang/String;)V
 .limit stack 100
 .limit locals 100
-
-ldc 0
-ldc 0
-iadd
-istore -1

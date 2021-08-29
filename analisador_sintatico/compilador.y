@@ -39,8 +39,8 @@ void yyerror(const char* s);
 %left T_PLUS T_MINUS
 %left T_MULTIPLY T_DIVIDE
 
-%type <fval> exprREAL
-%type <ival> exprINT
+%type<fval> exprREAL
+%type<ival> exprINT 
 
 
 %start comp
@@ -51,7 +51,7 @@ comp: {header();} start
 	;
 
 start: %empty
-	| T_QUIT			{ printf("Até mais...\n"); exit(0); }
+	| T_QUIT			{ final();list_delete(v); exit(0); }
 	| declaracao start
 	| atribuicao start
 	| entrada start
@@ -64,79 +64,80 @@ start: %empty
 	| cond start
 	;
 
-declaracao:  T_TINTEIRO T_VAR   				{ printf("VARIAVEL INTEIRO LIDA\n"); setTipo(v,$1,$2);} 
-	| T_TREAL T_VAR  							{ printf("VARIAVEL REAL LIDA\n"); setTipo(v,$1,$2);}
-	| T_TBOOLEANO T_VAR 						{ printf("VARIAVEL BOOLEANA LIDA\n"); setTipo(v,$1,$2);}
+declaracao:  T_TINTEIRO T_VAR   				{ setTipo(v,$1,$2);printf("%s",$2);} 
+	| T_TREAL T_VAR  							{ setTipo(v,$1,$2);}
+	| T_TBOOLEANO T_VAR 						{ setTipo(v,$1,$2);}
 	;
 
 
-atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT 	{ printf("ATRIBUIÇÃO LIDA (INT)\n"); setTipo(v,$1,$2); istore(v,$2);} 
-	| T_TREAL T_VAR T_ATRIB exprREAL 			{ printf("ATRIBUIÇÃO LIDA (REAL)\n"); setTipo(v,$1,$2);}
-	| T_TBOOLEANO T_VAR T_ATRIB T_TRUE			{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); setTipo(v,$1,$2);}
-	| T_TBOOLEANO T_VAR T_ATRIB T_FALSE	 		{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); setTipo(v,$1,$2);}
-	| T_VAR T_ATRIB exprINT						{ printf("ATRIBUIÇÃO LIDA (INT)\n"); }
-	| T_VAR T_ATRIB exprREAL 					{ printf("ATRIBUIÇÃO LIDA (REAL)\n"); }
-	| T_VAR T_ATRIB T_TRUE						{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
-	| T_VAR T_ATRIB T_FALSE	 					{  printf("ATRIBUIÇÃO LIDA (BOOL)\n"); }
+atribuicao: T_TINTEIRO T_VAR T_ATRIB exprINT 	{ setTipo(v,$1,$2);setVali(v,$4,$2); istore(v,$2);} 
+	| T_TREAL T_VAR T_ATRIB exprREAL 			{ setTipo(v,$1,$2);setValf(v,$4,$2); istore(v,$2);}
+	| T_TBOOLEANO T_VAR T_ATRIB T_TRUE			{ setTipo(v,$1,$2);setValv(v,$4,$2);}
+	| T_TBOOLEANO T_VAR T_ATRIB T_FALSE	 		{ setTipo(v,$1,$2);setValv(v,$4,$2);}
+	| T_VAR T_ATRIB exprINT						{ setVali(v,$3,$1);istore(v,$1);} 
+	| T_VAR T_ATRIB exprREAL 					{ setValf(v,$3,$1);istore(v,$1);}
+	| T_VAR T_ATRIB T_VAR						{ setValv(v,$3,$1);atribV(v,$1,$3);}
+	// | T_VAR T_ATRIB T_TRUE						{ }
+	// | T_VAR T_ATRIB T_FALSE	 					{ }
 	;
 
-exprINT: T_INT									{ldc($1);}			
+exprINT: T_INT									{bipush($1);} 		
 	| exprINT T_PLUS exprINT					{$$=$1+$3; iadd();}
 	| exprINT T_MINUS exprINT					{$$=$1-$3; isub();}
 	| exprINT T_MULTIPLY exprINT				{$$=$1*$3; imul();}
 	| exprINT T_DIVIDE exprINT					{$$=$1/$3; idiv();}
 	| T_LEFT exprINT T_RIGHT					{$$=$2;}
-	| T_VAR T_PLUS exprINT
-	| T_VAR T_MINUS exprINT
-	| T_VAR T_MULTIPLY exprINT
-	| T_VAR T_DIVIDE exprINT
+	| T_VAR T_PLUS exprINT						{iload(v,$1);$$=atoi(getValVar(v,$1))+$3;iadd();}
+	| T_VAR T_MINUS exprINT						{iload(v,$1);$$=atoi(getValVar(v,$1))-$3;isub();}
+	| T_VAR T_MULTIPLY exprINT					{iload(v,$1);$$=atoi(getValVar(v,$1))*$3;imul();}
+	| T_VAR T_DIVIDE exprINT					{iload(v,$1);$$=atoi(getValVar(v,$1))*$3;idiv();}
 	;
 
-exprREAL: T_REAL
-	| exprREAL T_PLUS exprREAL 			{$$=$1+$3;}
-	| exprREAL T_MINUS exprREAL 		{$$=$1-$3;}
-	| exprREAL T_MULTIPLY exprREAL		{$$=$1*$3; fmul();}
-	| exprREAL T_DIVIDE exprREAL		{$$=$1/$3;}
+exprREAL: T_REAL						{ldcf($1);}	  
+	| exprREAL T_PLUS exprREAL 			{$$=$1+$3;fadd();}
+	| exprREAL T_MINUS exprREAL 		{$$=$1-$3;fsub();}
+	| exprREAL T_MULTIPLY exprREAL		{$$=$1*$3;fmul();}
+	| exprREAL T_DIVIDE exprREAL		{$$=$1/$3;fdiv();}
 	| T_LEFT exprREAL T_RIGHT			{$$=$2;}
-	| exprINT T_PLUS exprREAL 			{$$=$1+$3;}
-	| exprINT T_MINUS exprREAL			{$$=$1-$3;}
-	| exprINT T_MULTIPLY exprREAL		{$$=$1*$3;}
-	| exprINT T_DIVIDE exprREAL			{$$=$1/$3;}
-	| exprREAL T_PLUS exprINT			{$$=$1+$3;}
-	| exprREAL T_MINUS exprINT			{$$=$1-$3;}
-	| exprREAL T_MULTIPLY exprINT		{$$=$1*$3;}
-	| exprREAL T_DIVIDE exprINT			{$$=$1/$3;}
-	| T_VAR T_PLUS exprREAL
-	| T_VAR T_MINUS exprREAL
-	| T_VAR T_MULTIPLY exprREAL
-	| T_VAR T_DIVIDE exprREAL
+	| exprINT T_PLUS exprREAL 			{$$=$1+$3;fadd();}
+	| exprINT T_MINUS exprREAL			{$$=$1-$3;fsub();}
+	| exprINT T_MULTIPLY exprREAL		{$$=$1*$3;fmul();}
+	| exprINT T_DIVIDE exprREAL			{$$=$1/$3;fdiv();}
+	| exprREAL T_PLUS exprINT			{$$=$1+$3;fadd();}
+	| exprREAL T_MINUS exprINT			{$$=$1-$3;fsub();}
+	| exprREAL T_MULTIPLY exprINT		{$$=$1*$3;fmul();}
+	| exprREAL T_DIVIDE exprINT			{$$=$1/$3;fdiv();}
+	// | T_VAR T_PLUS exprREAL			
+	// | T_VAR T_MINUS exprREAL			
+	// | T_VAR T_MULTIPLY exprREAL			
+	// | T_VAR T_DIVIDE exprREAL			
 	;
 
-relacional: T_VAR T_MAIOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR > exprINT)\n"); }
-	| T_VAR T_MENOR exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR < exprINT)\n"); }
-	| T_VAR T_MAIORE exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR >= exprINT)\n"); }
-	| T_VAR T_MENORE exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR <= exprINT)\n"); }
-	| T_VAR T_EQUAL exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR == exprINT)\n"); }
-	| T_VAR T_DIF exprINT { printf("OPERAÇÃO RELACIONAL LIDA (VAR != exprINT)\n"); }
+relacional: T_VAR T_MAIOR exprINT {ifiti(v,$1,$3);}  	
+	| T_VAR T_MENOR exprINT {ifgti(v,$1,$3);}
+	| T_VAR T_MAIORE exprINT {ifiei(v,$1,$3);}  
+	| T_VAR T_MENORE exprINT {ifgei(v,$1,$3);} 
+	| T_VAR T_EQUAL exprINT {ifnei(v,$1,$3);}  
+	| T_VAR T_DIF exprINT {ifeqi(v,$1,$3);}  
 
-	|T_VAR T_MAIOR exprREAL { printf("OPERAÇÃO RELACIONAL LIDA (VAR > exprREAL)\n"); }
-	| T_VAR T_MENOR exprREAL { printf("OPERAÇÃO RELACIONAL LIDA (VAR < exprREAL)\n"); }
-	| T_VAR T_MAIORE exprREAL { printf("OPERAÇÃO RELACIONAL LIDA (VAR >= exprREAL)\n"); }
-	| T_VAR T_MENORE exprREAL { printf("OPERAÇÃO RELACIONAL LIDA (VAR <= exprREAL)\n"); }
-	| T_VAR T_EQUAL exprREAL { printf("OPERAÇÃO RELACIONAL LIDA (VAR == exprREAL)\n"); }
-	| T_VAR T_DIF exprREAL{ printf("OPERAÇÃO RELACIONAL LIDA (VAR != exprREAL)\n"); }
+	|T_VAR T_MAIOR exprREAL {ifitf(v,$1,$3);}  
+	| T_VAR T_MENOR exprREAL {ifgtf(v,$1,$3);} 
+	| T_VAR T_MAIORE exprREAL {ifief(v,$1,$3);}   
+	| T_VAR T_MENORE exprREAL {ifgef(v,$1,$3);} 
+	| T_VAR T_EQUAL exprREAL {ifnef(v,$1,$3);}  
+	| T_VAR T_DIF exprREAL {ifeqf(v,$1,$3);}
 	
-	|T_VAR T_MAIOR T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR > VAR)\n"); }
-	| T_VAR T_MENOR  T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR < VAR)\n"); }
-	| T_VAR T_MAIORE T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR >= VAR)\n"); }
-	| T_VAR T_MENORE T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR <= VAR)\n"); }
-	| T_VAR T_EQUAL T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR == VAR)\n"); }
-	| T_VAR T_DIF T_VAR { printf("OPERAÇÃO RELACIONAL LIDA (VAR != VAR)\n"); }
+	|T_VAR T_MAIOR T_VAR {ifitv(v,$1,$3);}  
+	| T_VAR T_MENOR  T_VAR {ifgtv(v,$1,$3);}  
+	| T_VAR T_MAIORE T_VAR {ifiev(v,$1,$3);}  
+	| T_VAR T_MENORE T_VAR {ifgev(v,$1,$3);} 
+	| T_VAR T_EQUAL T_VAR {ifnev(v,$1,$3);}
+	| T_VAR T_DIF T_VAR {ifeqv(v,$1,$3);}  
 
-	|T_VAR T_EQUAL T_FALSE { printf("OPERAÇÃO RELACIONAL LIDA (VAR == FALSE)\n");}
-	|T_VAR T_EQUAL T_TRUE { printf("OPERAÇÃO RELACIONAL LIDA (VAR == TRUE)\n");}
-	|T_VAR T_DIF T_TRUE { printf("OPERAÇÃO RELACIONAL LIDA (VAR != TRUE)\n");}
-	|T_VAR T_DIF T_FALSE { printf("OPERAÇÃO RELACIONAL LIDA (VAR != FALSE)\n");}
+	|T_VAR T_EQUAL T_FALSE { }
+	|T_VAR T_EQUAL T_TRUE { }
+	|T_VAR T_DIF T_TRUE { }
+	|T_VAR T_DIF T_FALSE { }
 	;
 
 oplogica:  %empty
@@ -165,7 +166,7 @@ saida: T_PRINT T_LEFT T_VAR T_RIGHT	 {printf("PRINT LIDO\n"); }
 cond: if else
 	;
 
-if: T_IF T_LEFT relacional oplogica T_RIGHT bloco {printf("IF LIDO\n"); }
+if: T_IF T_LEFT relacional oplogica T_RIGHT bloco {gotol(); printLabelInvertido(); }
 	;
 
 else: %empty
@@ -186,7 +187,7 @@ case: T_CASE T_INT T_2P start T_BREAK {printf("CASE LIDO\n");}
 default : %empty 
 	|T_DEFAULT T_2P start T_BREAK  {printf("DEFAULT LIDO\n");}
 
-while: T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {printf("WHILE LIDO\n"); }
+while: {printLabelWhile();} T_WHILE T_LEFT relacional oplogica T_RIGHT bloco {gotolW();printLabel();}
 	| T_DO bloco T_WHILE T_LEFT relacional oplogica T_RIGHT {printf("DO-WHILE LIDO\n");}
 	;
 
@@ -195,7 +196,7 @@ for: T_FOR T_VAR T_INRANGE T_VAR bloco {printf("FOR LIDO\n");}
 	| T_FOR T_VAR T_INRANGE T_INT bloco {printf("FOR LIDO\n");}
 	;
 
-plus: T_VAR T_PP  {printf("VAR++ LIDO\n"); }
+plus: T_VAR T_PP  {plusplus(v,$1);}
 	;
 
 minus: T_VAR T_MM {printf("VAR-- LIDO\n"); }
